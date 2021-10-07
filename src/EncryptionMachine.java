@@ -25,15 +25,26 @@ public class EncryptionMachine
         {
             System.out.println(welcomeMessage);
         }
+        
+        /**
+         * Scans input from a user
+         * @param scanMessage - message prompt instruction
+         * @return - returns scanned string
+         */
+        private String ScanInput(String scanMessage)
+        {
+        	@SuppressWarnings("resource")
+			Scanner scan = new Scanner(System.in);
+        	System.out.println(scanMessage);
+        	return scan.nextLine();
+        }
 
         /**
          * Asks for and encrypts the KEY
          */
         private void EncryptKey()
         {
-            Scanner scanKey = new Scanner(System.in);
-            System.out.println("Enter Key:");
-            String KEY = scanKey.nextLine();
+            String KEY = ScanInput("Enter Key:");
             String encryptedKey = EncryptWord(KEY);
             System.out.println("\"" + KEY + "\"" + " has been encrypted to: " + encryptedKey);
         }
@@ -46,10 +57,11 @@ public class EncryptionMachine
         private char EncryptChar(char c)
         {
             if (ALPHABET.indexOf(c) == -1)
+            {
+            	System.out.println("Not a valid character");
                 System.exit(1);
-            int newIndex = ALPHABET.indexOf(c) + SHIFT;
-            if (newIndex > 25)
-                newIndex = newIndex % 26;
+            }
+            int newIndex = (ALPHABET.indexOf(c) + SHIFT) % 26;
             return ALPHABET.charAt(newIndex);
         }
 
@@ -73,15 +85,11 @@ public class EncryptionMachine
          */
         private void EncryptMessages()
         {
-            Scanner scan = new Scanner(System.in);
-            System.out.println("\nHow many words is your message?:");
-            int numOfWords = Integer.parseInt(scan.nextLine());
+            int numOfWords = Integer.parseInt(ScanInput("\nHow many words is your message?:"));
 
             for (int i = 0; i < numOfWords; i++)
             {
-                Scanner scanWord = new Scanner(System.in);
-                System.out.println("Next word:");
-                String word = scanWord.nextLine();
+                String word = ScanInput("Next word:");
                 String encryptedWord = EncryptWord(word);
                 System.out.println("\"" + word + "\" " + "has been encrypted to: " + encryptedWord +
                         "\n");
